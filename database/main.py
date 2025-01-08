@@ -1,9 +1,13 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
+from database import Base, engine, get_db
 from sqlalchemy.orm import Session
-from . import crud, models, schemas, database
 
-app = FastAPI()
+app = FastAPI(title="Time Travel ChatBot")
 
-models.Base.metadata.create_all(bind=database.engine)
+# 데이터베이스 테이블 생성
+Base.metadata.create_all(bind=engine)
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to Time Travel ChatBot"}
 
