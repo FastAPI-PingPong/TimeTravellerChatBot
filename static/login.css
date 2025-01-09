@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+
+.welcome-text {
+    text-align: left;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+}
+
+.links {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* 이미지와 텍스트를 왼쪽에 배치하고 크기 맞추기 */
+.links a {
+    color: #666;
+    text-decoration: none;
+    display: inline-flex; /* 텍스트와 아이콘을 수평으로 정렬 */
+    align-items: center;
+}
+
+.links a img {
+    width: 18px;  /* 아이콘 크기 조정 */
+    height: 18px;
+    margin-right: 5px;  /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.links a:hover {
+    color: #333;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #333;
+}
