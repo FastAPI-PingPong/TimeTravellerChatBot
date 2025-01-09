@@ -24,6 +24,7 @@ class SessionModel(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("UserModel", back_populates="sessions")
+    chats = relationship("ChatModel", back_populates="session")
 
 
 class ChatModel(Base):
