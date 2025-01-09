@@ -7,9 +7,16 @@ from .auth import (
     get_hashed_password,
     verify_password,
     create_token,
+    get_user_from_access_token,
 )
-from .schemas import UserCreate, UserCreateResposne, TokenResponse
-from .models import UserModel
+from .schemas import (
+    UserCreate,
+    UserCreateResposne,
+    TokenResponse,
+    SessionCreate,
+    SessionCreateResponse,
+)
+from .models import UserModel, SessionModel
 
 
 @asynccontextmanager
@@ -55,3 +62,20 @@ async def login(
 
     access_token = create_token(str(user.username))
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.post("/session", response_model=SessionCreateResponse)
+async def create_session(
+    session_create_data: SessionCreate,
+    user: UserModel = Depends(get_user_from_access_token),
+    db: Session = Depends(get_db),
+):
+
+    new_session = SessionModel(user_id=user.id, **session_create_data.model_dump())
+    db.add(new_session)
+    db.commit()
+    db.refresh(new_session)
+
+    # TODO: create first ChatModel for new session - ChatGPT의 자기소개
+
+    return new_session

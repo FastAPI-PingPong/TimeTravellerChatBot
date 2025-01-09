@@ -20,3 +20,7 @@ class SessionCreate(BaseModel):
     year: int
     location: str
     persona: str
+
+
+class SessionCreateResponse(BaseModel):
+    id: int
