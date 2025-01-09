@@ -1,11 +1,22 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .database import get_db
+from contextlib import asynccontextmanager
+from .database import create_tables, get_db
 from .auth import get_hashed_password
 from .schemas import UserCreate, UserCreateResposne
 from .models import User
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Database의 모든 model이 정의된 이후에 명시적으로 table을 생성
+    """
+    create_tables()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")
