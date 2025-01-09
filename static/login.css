@@ -27,7 +27,6 @@ h1 {
     margin-bottom: 1rem;
 }
 
-
 .welcome-text {
     text-align: left;
     margin-bottom: 2rem;
@@ -62,18 +61,17 @@ input {
     font-size: 0.9rem;
 }
 
-/* 이미지와 텍스트를 왼쪽에 배치하고 크기 맞추기 */
 .links a {
     color: #666;
     text-decoration: none;
-    display: inline-flex; /* 텍스트와 아이콘을 수평으로 정렬 */
+    display: inline-flex;
     align-items: center;
 }
 
 .links a img {
-    width: 18px;  /* 아이콘 크기 조정 */
+    width: 18px;
     height: 18px;
-    margin-right: 5px;  /* 아이콘과 텍스트 사이의 간격 */
+    margin-right: 5px;
 }
 
 .links a:hover {
