@@ -9,3 +9,8 @@ class UserCreate(BaseModel):
 class UserCreateResposne(BaseModel):
     username: str
     id: int
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
