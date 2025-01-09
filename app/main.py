@@ -9,7 +9,7 @@ from .auth import (
     create_token,
 )
 from .schemas import UserCreate, UserCreateResposne, TokenResponse
-from .models import User
+from .models import UserModel
 
 
 @asynccontextmanager
@@ -31,10 +31,10 @@ def read_root():
 
 @app.post("/signup", response_model=UserCreateResposne)
 async def signup(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.username == user.username).first():
+    if db.query(UserModel).filter(UserModel.username == user.username).first():
         raise HTTPException(status_code=409, detail="Username is already taken.")
     hashed_password = get_hashed_password(user.password)
-    new_user = User(username=user.username, hashed_password=hashed_password)
+    new_user = UserModel(username=user.username, hashed_password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -45,7 +45,7 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
-    user = db.query(User).filter(User.username == form_data.username).first()
+    user = db.query(UserModel).filter(UserModel.username == form_data.username).first()
     if (
         not user
         or not form_data.password
