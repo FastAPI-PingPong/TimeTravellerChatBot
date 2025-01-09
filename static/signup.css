@@ -27,13 +27,6 @@ h1 {
     margin-bottom: 2rem;
 }
 
-hr.title-line {
-    margin-top: 1rem;  
-    margin-bottom: 3rem;  
-    border: 0;
-    border-top: 1px solid black;  
-}
-
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -46,9 +39,11 @@ label {
 
 input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background: transparent;
     font-size: 1rem;
 }
 
