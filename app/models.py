@@ -26,4 +26,13 @@ class SessionModel(Base):
     user = relationship("UserModel", back_populates="sessions")
 
 
-# TODO: add Chat model
+class ChatModel(Base):
+    __tablename__ = "chats"
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(Integer, ForeignKey("sessions.id"))
+    question = Column(String)
+    answer = Column(String)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    session = relationship("SessionModel", back_populates="chats")
