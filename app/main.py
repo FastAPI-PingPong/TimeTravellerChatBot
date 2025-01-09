@@ -80,7 +80,7 @@ async def create_session(
     return new_session
 
 
-@app.get("/intro/{session_id}", response_model=ChatResponse)
+@app.get("/introduction/{session_id}", response_model=ChatResponse)
 async def get_introduction(
     session_id: int,
     user: UserModel = Depends(get_user_from_access_token),
