@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from .database import Base
 
 
-class User(Base):
+class UserModel(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -12,7 +12,7 @@ class User(Base):
     hashed_password = Column(String)
 
 
-class Session(Base):
+class SessionModel(Base):
     __tablename__ = "sessions"
 
     id = Column(Integer, primary_key=True, index=True)

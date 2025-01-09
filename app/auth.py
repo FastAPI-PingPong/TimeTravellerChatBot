@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 from jose import jwt, JWTError
 from .database import get_db
-from .models import User
+from .models import UserModel
 
 SECRET_KEY = "secret_key"
 ALGORITHM = "HS256"
@@ -58,7 +58,7 @@ def get_user_from_access_token(
     if username is None:
         raise credentials_exception
 
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(UserModel).filter(UserModel.username == username).first()
     if user is None:
         raise credentials_exception
 
