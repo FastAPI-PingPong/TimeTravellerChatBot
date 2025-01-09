@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from database import get_db
-from auth import get_hashed_password
-from schemas import UserCreate, UserCreateResposne
-from models import User
+from .database import get_db
+from .auth import get_hashed_password
+from .schemas import UserCreate, UserCreateResposne
+from .models import User
 
 app = FastAPI()
 
