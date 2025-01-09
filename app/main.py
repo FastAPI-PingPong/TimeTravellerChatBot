@@ -3,7 +3,12 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 from .database import create_tables, get_db
-from .auth import get_hashed_password, verify_password, create_token
+from .auth import (
+    get_hashed_password,
+    verify_password,
+    create_token,
+    get_user_from_access_token,
+)
 from .schemas import UserCreate, UserCreateResposne, TokenResponse
 from .models import User
 
@@ -51,3 +56,9 @@ async def login(
 
     access_token = create_token(str(user.username))
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+# Temporary protected endpoint to check JWT encoding/decoding logic works.
+@app.get("/protected")
+async def protected(user: str = Depends(get_user_from_access_token)):
+    return {"user": user}
