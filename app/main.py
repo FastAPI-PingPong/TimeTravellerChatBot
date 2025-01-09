@@ -15,6 +15,7 @@ from .schemas import (
     TokenResponse,
     SessionCreate,
     SessionCreateResponse,
+    ChatResponse,
 )
 from .models import UserModel, SessionModel
 
@@ -75,7 +76,15 @@ async def create_session(
     db.add(new_session)
     db.commit()
     db.refresh(new_session)
-
-    # TODO: create first ChatModel for new session - ChatGPT의 자기소개
-
     return new_session
+
+
+@app.get("/intro/{session_id}", response_model=ChatResponse)
+async def get_introduction(
+    session_id: int,
+    user: UserModel = Depends(get_user_from_access_token),
+    db: Session = Depends(get_db),
+):
+    # TODO: ChatManager를 통해 첫 질문(introduction)을 받아오고 대답을 reponse로 반환
+
+    return {"question": "q", "answer": "a"}
