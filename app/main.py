@@ -18,6 +18,7 @@ from .schemas import (
     ChatResponse,
 )
 from .models import UserModel, SessionModel
+from .chat import ChatManager
 
 
 @asynccontextmanager
@@ -85,6 +86,10 @@ async def get_introduction(
     user: UserModel = Depends(get_user_from_access_token),
     db: Session = Depends(get_db),
 ):
+    """
+    가상인물의 자기소개 멘트를 반환.
+    """
     # TODO: ChatManager를 통해 첫 질문(introduction)을 받아오고 대답을 reponse로 반환
-
-    return {"question": "q", "answer": "a"}
+    chat_manager = ChatManager(session_id, db)
+    introduction = chat_manager.get_introduction()
+    return {"question": "", "answer": introduction}
