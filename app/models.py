@@ -10,6 +10,7 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    sessions = relationship("SessionModel", back_populates="user")
 
 
 class SessionModel(Base):
@@ -22,7 +23,7 @@ class SessionModel(Base):
     persona = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    user = relationship("User", back_populates="sessions")
+    user = relationship("UserModel", back_populates="sessions")
 
 
 # TODO: add Chat model
