@@ -14,3 +14,9 @@ class UserCreateResposne(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
+
+
+class SessionCreate(BaseModel):
+    year: int
+    location: str
+    persona: str
