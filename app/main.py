@@ -15,6 +15,7 @@ from .schemas import (
     TokenResponse,
     SessionCreate,
     SessionCreateResponse,
+    ChatCreate,
     ChatResponse,
 )
 from .models import UserModel, SessionModel
@@ -93,3 +94,17 @@ async def get_introduction(
     chat_manager = ChatManager(session_id, db)
     introduction = chat_manager.get_introduction()
     return {"question": "", "answer": introduction}
+
+
+@app.post("/chat/{session_id}", response_model=ChatResponse)
+async def chat(
+    session_id: int,
+    chat_create_data: ChatCreate,
+    user: UserModel = Depends(get_user_from_access_token),
+    db: Session = Depends(get_db),
+):
+    # TODO:
+    # chat_manager = ChatManager(session_id, db)
+    # answer = chat_manager.get_answer(chat_create_data.question)
+    answer = ""
+    return {"question": chat_create_data.question, "answer": answer}

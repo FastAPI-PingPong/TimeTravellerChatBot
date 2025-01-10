@@ -26,6 +26,10 @@ class SessionCreateResponse(BaseModel):
     id: int
 
 
+class ChatCreate(BaseModel):
+    question: str
+
+
 class ChatResponse(BaseModel):
     question: str
     answer: str
