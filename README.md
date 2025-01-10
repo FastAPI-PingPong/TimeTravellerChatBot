@@ -1,8 +1,6 @@
 # TimeTravellerChatBot
 
-ChatGPT API를 통해 과거의 인물에게서 당시의 이야기를 들을 수 있습니다.
-
-# Time Traveller Chat Bot
+ChatGPT API를 통해 과거의 인물에게서 당시의 실감나는 이야기를 들을 수 있습니다!
 
 ## 프로젝트 소개
 
