@@ -19,9 +19,7 @@ class Message:
 
 
 class ChatHistory:
-    """
-    ChatGPT와 대화했던 내역인 Message들을 목록으로 저장하는 객체
-    """
+    """ChatGPT과 대화의 개별 내역인 Message들을 목록으로 저장하기 위한 클래스"""
 
     def __init__(self):
         self._messages: list[Message] = []
@@ -39,16 +37,18 @@ class ChatHistory:
         self._messages.clear()
 
     def convert_messages_to_dict_list(self):
+        """Message 목록의 개별 Message 객체를 ChatGPT가 이해하는 dict 형태로 변환하기"""
         return [msg.to_dict() for msg in self._messages]
 
 
 class ChatManager:
     """
-    기능
-    1. Session 정보를 받아서, Session의 모든 Chat 정보를 신규 ChatHistory 객체로 통합.
-    2. ChatHistory에 신규 질문을 추가.
-    3. 서버 통신으로 ChatHistory 객체를 보내고, 신규 응답은 Chat 모델로 생성함.
+    ChatGPT 통신하기 위한 매니저 클래스
 
+    [작동 방식]
+    1. 초기화 시점에 Session 정보를 받아서 Session에 속한 모든 Chat 정보를 Message로 변환하여 신규 ChatHistory 객체로 통합.
+    2. ChatGPT에 자기소개(introduction)를 요청할 때, ChatHistory에 prompt 질문 추가하여 전송.
+    3. ChatGPT에 새로운 질문을 요청할 때, ChatHistory에 해당 질문 추가하여 전송.
     """
 
     def __init__(self, session_id, db):
@@ -58,10 +58,8 @@ class ChatManager:
         self.chat_history = self.make_chat_history()
 
     def make_chat_history(self):
-        """
-        Session에 속한 모든 Chat의 질문과 대답을 Message로 변환하여 chat history에 통합하여 저장.
-        모든 신규 질문 요청 전에 반드시 호출되어야 함.
-        """
+        """Session에 속한 모든 Chat의 질문과 대답을 Message로 변환하여 ChatHistory 객체로 통합하기"""
+
         session = self.orm.get_session_by_id(self.session_id)
         chat_history = ChatHistory()
         if session:
@@ -84,17 +82,15 @@ class ChatManager:
         return chat_history
 
     def send_question_with_history(self):
-        """
-        ChatGPT에 chat history가 포함된 질문을 보내고 답변을 받기.
-        반환: ChatGPT의 답변 문자열
-        """
+        """ChatGPT에 ChatHistory를 포맷 변환하여 질문을 보내고 답변 받기"""
+
         messages_dict_list = self.chat_history.convert_messages_to_dict_list()
         response = requests.post(url=self.url_endpoint, json=messages_dict_list)
         # TODO: request 에러처리
         return response.json()["choices"][0]["message"]["content"]
 
     def add_question_into_history_and_get_answer(self, role, question):
-        """신규 질문을 기존 history에 추가한 후, 전체 history를 ChatGPT에게 보내서 답변받기"""
+        """새로운 질문을 기존 ChatHistory에 추가한 후, 전체 ChatHistory를 ChatGPT에게 전송해서 답변 받기"""
 
         self.chat_history.append(Message(role=role, content=question))
         answer = self.send_question_with_history()
@@ -104,7 +100,7 @@ class ChatManager:
         """ChatGPT가 수행할 역할을 설정하고, 자기소개 멘트를 확보하기"""
 
         def _make_introduction_prompt_message(year, location, persona):
-            """ChatGPT가 수행할 역할을 설정하는 prompt 메시지 생성."""
+            """ChatGPT가 수행할 역할을 설정하는 prompt 메시지 생성하기"""
             prompt = (
                 f"너는 {year}년에 {location} 지역에 살고 있는 '{persona}'인 사람이야. "
                 f"앞으로 말투도 그런 사람인 것처럼 대답해. "
@@ -122,7 +118,7 @@ class ChatManager:
         return introduction_prompt, introduction
 
     def get_answer(self, question):
-        """ChatGPT에게 질문하고 대답을 얻기"""
+        """ChatGPT에게 새로운 질문을 하고 답변 받기"""
 
         answer = self.add_question_into_history_and_get_answer(
             role="user", question=question
