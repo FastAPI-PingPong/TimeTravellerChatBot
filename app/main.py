@@ -22,7 +22,7 @@ from .orm import ORM
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Database의 모든 model이 정의된 이후에 명시적으로 table을 생성
+    애플리케이션 시작 시 데이터베이스 테이블을 생성하는 lifespan 이벤트 핸들러
     """
     create_tables()
     yield
@@ -38,6 +38,20 @@ def read_root():
 
 @app.post("/signup", response_model=UserCreateResposne)
 async def signup(user: UserCreate, db: Session = Depends(get_db)):
+    """
+    새로운 사용자를 등록하는 엔드포인트
+
+    Args: 사용자 생성 정보
+    - username: 사용자명
+    - password: 비밀번호
+
+    Returns: 생성된 사용자 정보
+    - id: 사용자 ID
+    - username: 사용자명
+
+    Raises:
+        409: 사용자명이 이미 존재하는 경우
+    """
     orm = ORM(db)
     if orm.check_username_exists(user.username):
         raise HTTPException(status_code=409, detail="Username is already taken.")
@@ -50,6 +64,20 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
+    """
+    사용자 로그인을 처리하는 엔드포인트
+
+    Args: 로그인 폼 데이터
+    - username: 사용자명
+    - password: 비밀번호
+
+    Returns: 토큰 정보
+    - access_token: JWT 액세스 토큰
+    - token_type: 토큰 타입 (bearer)
+
+    Raises:
+        401: 잘못된 사용자명이나 비밀번호
+    """
     orm = ORM(db)
     user = orm.get_user_by_username(form_data.username)
     if (
@@ -69,6 +97,17 @@ async def create_session(
     user: UserModel = Depends(get_user_from_access_token),
     db: Session = Depends(get_db),
 ):
+    """
+    ChatGPT와의 새로운 채팅 세션을 생성하는 엔드포인트
+
+    Args: 세션 생성 정보
+    - year: 가상인물의 시대 연도
+    - location: 가상인물의 위치 정보
+    - persona: 가상인물의 페르소나 정보
+
+    Returns: 생성된 세션 정보
+    - id: 세션 ID
+    """
     orm = ORM(db)
     new_session = orm.create_session(session_create_data, user.id)
     return new_session
@@ -81,9 +120,15 @@ async def get_introduction(
     db: Session = Depends(get_db),
 ):
     """
-    가상인물의 자기소개 멘트를 반환.
+    특정 세션에 해당되는 가상인물의 자기소개 문구를 가져오는 엔드포인트
+
+    Args: 세션 ID
+    - session_id: 세션 ID (path parameter)
+
+    Returns: 자기소개 응답
+    - question: 빈 문자열
+    - answer: 가상인물의 자기소개 문구
     """
-    # TODO: ChatManager를 통해 첫 질문(introduction)을 받아오고 대답을 reponse로 반환
     chat_manager = ChatManager(session_id, db)
     introduction = chat_manager.get_introduction()
     return {"question": "", "answer": introduction}
@@ -96,6 +141,18 @@ async def chat(
     user: UserModel = Depends(get_user_from_access_token),
     db: Session = Depends(get_db),
 ):
+    """
+    ChatGPT에 새로운 질문 메시지를 전송하고 모든 질문과 답변의 기록을 반환하는 엔드포인트
+
+    Args: 세션 ID와 새로운 질문
+    - session_id: 세션 ID (path parameter)
+    - question: 사용자의 질문 메시지
+
+    Returns:
+        채팅 기록 목록 (질문과 답변 쌍의 리스트)
+            - question: 사용자 질문 메시지
+            - answer: 가상인물의 답변 메시지
+    """
     chat_manager = ChatManager(session_id, db)
     answer = chat_manager.get_answer(chat_create_data.question)
     orm = ORM(db)
