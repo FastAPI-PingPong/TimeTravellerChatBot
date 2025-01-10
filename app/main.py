@@ -14,7 +14,7 @@ from .schemas import (
     ChatCreate,
     ChatResponse,
 )
-from .models import UserModel, SessionModel, ChatModel
+from .models import UserModel
 from .chat import ChatManager
 from .orm import ORM
 

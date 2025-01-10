@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from .models import SessionModel, ChatModel
 from .orm import ORM
 import requests
 
@@ -55,9 +54,9 @@ class ChatManager:
         self.session_id = session_id
         self.orm = ORM(db)
         self.url_endpoint = URL_ENDPOINT
-        self.chat_history = self.make_chat_history()
+        self.chat_history = self.gather_chat_history()
 
-    def make_chat_history(self):
+    def gather_chat_history(self):
         """Session에 속한 모든 Chat의 질문과 대답을 Message로 변환하여 ChatHistory 객체로 통합하기"""
 
         session = self.orm.get_session_by_id(self.session_id)
