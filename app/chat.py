@@ -77,6 +77,7 @@ class ChatManager:
                 Message(role="assistant", content=str(chat_list[0].answer))
             )
             for chat in chat_list[1:]:
+                print(f"[Q] {chat.question} [A] {chat.answer}")
                 chat_history.append(Message(role="user", content=str(chat.question)))
                 chat_history.append(Message(role="assistant", content=str(chat.answer)))
         return chat_history
@@ -129,3 +130,12 @@ class ChatManager:
         )
         self.create_new_chat(question=introduction_prompt, answer=introduction)
         return introduction
+
+    def get_answer(self, question):
+        """ChatGPT에게 질문하고 대답을 얻기"""
+
+        answer = self.add_question_into_history_and_get_answer(
+            role="user", question=question
+        )
+        self.create_new_chat(question=question, answer=answer)
+        return answer
