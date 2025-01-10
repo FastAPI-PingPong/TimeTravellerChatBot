@@ -3,12 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 from .database import create_tables, get_db
-from .auth import (
-    get_hashed_password,
-    verify_password,
-    create_token,
-    get_user_from_access_token,
-)
+from .auth import verify_password, create_token, get_user_from_access_token
+
 from .schemas import (
     UserCreate,
     UserCreateResposne,
@@ -20,6 +16,7 @@ from .schemas import (
 )
 from .models import UserModel, SessionModel, ChatModel
 from .chat import ChatManager
+from .orm import ORM
 
 
 @asynccontextmanager
@@ -41,13 +38,11 @@ def read_root():
 
 @app.post("/signup", response_model=UserCreateResposne)
 async def signup(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(UserModel).filter(UserModel.username == user.username).first():
+    orm = ORM(db)
+    if orm.check_username_exists(user.username):
         raise HTTPException(status_code=409, detail="Username is already taken.")
-    hashed_password = get_hashed_password(user.password)
-    new_user = UserModel(username=user.username, hashed_password=hashed_password)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+
+    new_user = orm.create_user(user)
     return new_user
 
 
@@ -55,7 +50,8 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
-    user = db.query(UserModel).filter(UserModel.username == form_data.username).first()
+    orm = ORM(db)
+    user = orm.get_user_by_username(form_data.username)
     if (
         not user
         or not form_data.password
@@ -73,11 +69,8 @@ async def create_session(
     user: UserModel = Depends(get_user_from_access_token),
     db: Session = Depends(get_db),
 ):
-
-    new_session = SessionModel(user_id=user.id, **session_create_data.model_dump())
-    db.add(new_session)
-    db.commit()
-    db.refresh(new_session)
+    orm = ORM(db)
+    new_session = orm.create_session(session_create_data, user.id)
     return new_session
 
 
@@ -105,6 +98,7 @@ async def chat(
 ):
     chat_manager = ChatManager(session_id, db)
     answer = chat_manager.get_answer(chat_create_data.question)
-    chats = db.query(ChatModel).filter(ChatModel.session_id == session_id).all()
+    orm = ORM(db)
+    chats = orm.get_chats_by_session(session_id)
     chat_list = [{"question": chat.question, "answer": chat.answer} for chat in chats]
     return chat_list
