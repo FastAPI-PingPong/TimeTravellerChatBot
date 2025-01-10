@@ -105,9 +105,11 @@ class ChatManager:
 
         def _make_introduction_prompt_message(year, location, persona):
             """ChatGPT가 수행할 역할을 설정하는 prompt 메시지 생성."""
-            prompt = f"""너는 {year}년에 {location} 지역에 살고 있는 '{persona}'인 사람이야.
-            앞으로 말투도 그런 사람인 것처럼 대답해.
-            짧게 너의 소개를 부탁해."""
+            prompt = (
+                f"너는 {year}년에 {location} 지역에 살고 있는 '{persona}'인 사람이야. "
+                f"앞으로 말투도 그런 사람인 것처럼 대답해. "
+                f"이름을 반드시 포함해서, 짧게 너 자신을 소개해줘."
+            )
             return prompt
 
         session = self.orm.get_session_by_id(self.session_id)
