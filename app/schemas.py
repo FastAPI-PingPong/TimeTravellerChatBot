@@ -2,34 +2,89 @@ from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
+    """
+    사용자 생성 요청을 위한 스키마
+
+    Attributes:
+    - username (str): 생성할 사용자의 고유한 사용자명
+    - password (str): 사용자의 평문 비밀번호
+    """
+
     username: str
     password: str
 
 
 class UserCreateResposne(BaseModel):
+    """
+    사용자 생성 응답을 위한 스키마
+
+    Attributes:
+    - username (str): 생성된 사용자의 사용자명
+    - id (int): 생성된 사용자의 고유 ID
+    """
+
     username: str
     id: int
 
 
 class TokenResponse(BaseModel):
+    """
+    인증 토큰 응답을 위한 스키마
+
+    Attributes:
+    - access_token (str): JWT 형식의 액세스 토큰
+    - token_type (str): 토큰 타입 (예: "bearer")
+    """
+
     access_token: str
     token_type: str
 
 
 class SessionCreate(BaseModel):
+    """
+    대화 세션 생성 요청을 위한 스키마
+
+    Attributes:
+    - year (int): 세션의 연도 설정값
+    - location (str): 세션의 위치 설정값
+    - persona (str): 세션의 인물 설정값
+    """
+
     year: int
     location: str
     persona: str
 
 
 class SessionCreateResponse(BaseModel):
+    """
+    대화 세션 생성 응답을 위한 스키마
+
+    Attributes:
+    - id (int): 생성된 세션의 고유 ID
+    """
+
     id: int
 
 
 class ChatCreate(BaseModel):
+    """
+    채팅 메시지 생성 요청을 위한 스키마
+
+    Attributes:
+    - question (str): 사용자의 질문 내용
+    """
+
     question: str
 
 
 class ChatResponse(BaseModel):
+    """
+    채팅 메시지 응답을 위한 스키마
+
+    Attributes:
+        question (str): 사용자가 보낸 원본 질문
+        answer (str): ChatGPT가 생성한 응답
+    """
+
     question: str
     answer: str
