@@ -130,7 +130,9 @@ async def get_introduction(
     - answer: 가상인물의 자기소개 문구
     """
     chat_manager = ChatManager(session_id, db)
-    introduction = chat_manager.get_introduction()
+    introduction_prompt, introduction = chat_manager.get_introduction()
+    orm = ORM(db)
+    orm.create_chat(session_id, introduction_prompt, introduction)
     return {"question": "", "answer": introduction}
 
 
@@ -154,8 +156,9 @@ async def chat(
             - answer: 가상인물의 답변 메시지
     """
     chat_manager = ChatManager(session_id, db)
-    answer = chat_manager.get_answer(chat_create_data.question)
+    question, answer = chat_manager.get_answer(chat_create_data.question)
     orm = ORM(db)
+    orm.create_chat(session_id, question, answer)
     chats = orm.get_chats_by_session(session_id)
     chat_list = [{"question": chat.question, "answer": chat.answer} for chat in chats]
     return chat_list
