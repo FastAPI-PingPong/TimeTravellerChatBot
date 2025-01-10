@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
         window.location.href = 'login.html';
         return;
     }
 
-    
+
     const chatData = JSON.parse(localStorage.getItem('chatData')) || {};
     const chatMessages = document.querySelector('.chat-messages');
     const chatInput = document.getElementById('chat-input');
@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
     const introMessage = document.querySelector('.intro-message');
 
-    
+
     introMessage.textContent = `["안녕하세요! 저는 ${chatData.year || '1800'}년 ${chatData.location || '프랑스'}의 ${chatData.person || '상인'}입니다."]`;
 
-    
+
     let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
 
-    
+
     const addMessage = (message, isUser) => {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
-    
+
     chatHistory.forEach(({ text, isUser }) => addMessage(text, isUser));
 
-    
+
     const sendMessage = () => {
         const message = chatInput.value.trim();
         if (!message) return;
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(message, true);
         chatInput.value = '';
 
-        
+
         chatHistory.push({ text: message, isUser: true });
         localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') sendMessage();
     });
 
-    
+
     logoutBtn.addEventListener('click', () => { //로그아웃 
         localStorage.removeItem('currentUser');
         localStorage.removeItem('chatData');
