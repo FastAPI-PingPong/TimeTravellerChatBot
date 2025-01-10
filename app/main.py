@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 from .database import create_tables, get_db
@@ -29,11 +31,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello, World!"}
+    return FileResponse("static/login.html")
 
 
 @app.post("/signup", response_model=UserCreateResposne)
