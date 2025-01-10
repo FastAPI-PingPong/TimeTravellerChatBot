@@ -117,8 +117,7 @@ class ChatManager:
         introduction = self.add_question_into_history_and_get_answer(
             role="system", question=introduction_prompt
         )
-        self.orm.create_chat(self.session_id, introduction_prompt, introduction)
-        return introduction
+        return introduction_prompt, introduction
 
     def get_answer(self, question):
         """ChatGPT에게 질문하고 대답을 얻기"""
@@ -126,5 +125,4 @@ class ChatManager:
         answer = self.add_question_into_history_and_get_answer(
             role="user", question=question
         )
-        self.orm.create_chat(self.session_id, question, answer)
-        return answer
+        return question, answer
