@@ -129,12 +129,12 @@ body {
 
 .user-message {
     background-color: rgba(255, 255, 255, 0.2);
-    align-self: flex-end; /* 사용자 메시지는 오른쪽 */
+    align-self: flex-start; 
 }
 
 .bot-message {
     background-color: rgba(255, 255, 255, 0.1);
-    align-self: flex-start; /* 봇 메시지는 왼쪽 */
+    align-self: flex-end; 
 }
 
 .warning-text {
@@ -152,7 +152,7 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     margin-bottom: 0.5rem;
-    align-self: flex-start;
+    align-self: flex-end;
 }
 
 .typing-indicator span {
