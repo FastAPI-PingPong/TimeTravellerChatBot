@@ -108,12 +108,18 @@ class ChatManager:
             return prompt
 
         session = self.orm.get_session_by_id(self.session_id)
+        chat_list = session.chats
+        if len(chat_list) > 0:
+            chat = chat_list[0]
+            return chat.question, chat.answer
+
         introduction_prompt = _make_introduction_prompt_message(
             year=session.year, location=session.location, persona=session.persona
         )
         introduction = self.add_question_into_history_and_get_answer(
             role="system", question=introduction_prompt
         )
+        self.orm.create_chat(self.session_id, introduction_prompt, introduction)
         return introduction_prompt, introduction
 
     def get_answer(self, question):
