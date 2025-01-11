@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const year = document.getElementById('year').value;
         const location = document.getElementById('location').value;
-        const person = document.getElementById('person').value;
+        const persona = document.getElementById('persona').value;
 
         const yearNum = parseInt(year);
         if (isNaN(yearNum)) {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     year: yearNum,
                     location: location,
-                    persona: person
+                    persona: persona
                 })
             });
             console.log(response)
