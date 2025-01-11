@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
     if (!sessionId) {
-        alert('세션 ID가 없습니다.');
+        alert('세션 ID가 없습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
         window.location.href = 'main.html';
         return;
     }
@@ -66,13 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const lastChat = chatList[chatList.length - 1];
                 addMessage(lastChat.answer, false);
             } else {
-                alert('메시지 전송 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+                const data = await response.json();
+                console.error(data.message || `HTTP error status: ${response.status}`);
+                alert('메시지 전송 중 오류가 발생했습니다.\n마지막 질문은 제거하겠습니다.');
                 chatMessages.removeChild(waitingIndicator);
                 chatMessages.removeChild(chatMessages.lastChild);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('서버 연결 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+            alert('서버 연결 중 오류가 발생했습니다.\n마지막 질문은 제거하겠습니다.');
             chatMessages.querySelectorAll('.typing-indicator').forEach(el => el.remove());
             chatMessages.removeChild(chatMessages.lastChild);
         } finally {
@@ -104,12 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(data)
                 introMessage.textContent = data.answer;
             } else {
-                alert('소개 메시지를 가져오는데 실패했습니다.');
+                const data = await response.json();
+                console.error(data.message || `HTTP error status: ${response.status}`);
+                alert('소개 메시지를 가져오는데 실패했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
                 window.location.href = 'main.html';
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('서버 연결 중 오류가 발생했습니다.');
+            alert('서버 연결 중 오류가 발생했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
+            window.location.href = 'main.html';
         }
     };
 
@@ -129,10 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     addMessage(chat.answer, false)
                 });
             } else {
-                console.error('채팅 내역을 가져오는데 실패했습니다.');
+                const data = await response.json();
+                console.error(data.message || `HTTP error status: ${response.status}`);
+                alert('이전 대화 내역 조회에 실패했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
+                window.location.href = 'main.html';
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('서버 연결 중 오류가 발생했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
+            window.location.href = 'main.html';
         }
     };
 
