@@ -46,7 +46,7 @@ body {
 
 .intro-message {
     font-size: 0.9rem;
-    text-align: center;
+    text-align: left; /* 왼쪽 정렬 */
     margin-bottom: 1rem;
     font-weight: bold;
 }
