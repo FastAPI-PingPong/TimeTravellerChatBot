@@ -23,7 +23,9 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    sessions = relationship("SessionModel", back_populates="user")
+    sessions = relationship(
+        "SessionModel", back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class SessionModel(Base):
@@ -46,14 +48,16 @@ class SessionModel(Base):
     __tablename__ = "sessions"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     year = Column(Integer)
     location = Column(String)
     persona = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("UserModel", back_populates="sessions")
-    chats = relationship("ChatModel", back_populates="session")
+    chats = relationship(
+        "ChatModel", back_populates="session", cascade="all, delete-orphan"
+    )
 
 
 class ChatModel(Base):
@@ -74,7 +78,7 @@ class ChatModel(Base):
     __tablename__ = "chats"
 
     id = Column(Integer, primary_key=True, index=True)
-    session_id = Column(Integer, ForeignKey("sessions.id"))
+    session_id = Column(Integer, ForeignKey("sessions.id", ondelete="CASCADE"))
     question = Column(String)
     answer = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
