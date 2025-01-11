@@ -11,30 +11,41 @@
 <body>
     <div class="container">
         <h1>Login</h1>
-        <p class="welcome-text">환영합니다</p>
-        <form class="login-form">
-            <div class="form-group">
-                <label for="id">ID</label>
-                <input type="text" id="id" name="id" required>
+        <div id="login-status" style="display: none;">
+            <div class="login-message">
+                <p class="login-status-text">로그인된 상태입니다.</p>
+                <div class="button-group">
+                    <button id="main-btn" class="main-btn">메인으로</button>
+                    <button id="logout-btn" class="logout-btn">로그아웃</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="links">
-                <span class="left-links">
-                    <a href="#" class="id-find">
-                        <img src="images/icon-lock.png" alt="아이디 찾기" class="icon"> 아이디|비밀번호
-                    </a>
-                </span>
-                <span class="right-links">
-                    <a href="signup.html" class="signup">
-                        <img src="images/icon-user.png" alt="회원가입" class="icon"> 회원가입
-                    </a>
-                </span>
-            </div>
-            <button type="submit" class="login-btn">로그인</button>
-        </form>
+        </div>
+        <div id="login-form-content">
+            <p class="welcome-text">환영합니다</p>
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input type="text" id="id" name="id" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="links">
+                    <span class="left-links">
+                        <a href="#" class="id-find">
+                            <img src="images/icon-lock.png" alt="아이디 찾기" class="icon"> 아이디|비밀번호
+                        </a>
+                    </span>
+                    <span class="right-links">
+                        <a href="signup.html" class="signup">
+                            <img src="images/icon-user.png" alt="회원가입" class="icon"> 회원가입
+                        </a>
+                    </span>
+                </div>
+                <button type="submit" class="login-btn">로그인</button>
+            </form>
+        </div>
     </div>
     <script src="js/login.js"></script>
 </body>
