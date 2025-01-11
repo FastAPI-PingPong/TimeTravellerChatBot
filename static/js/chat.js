@@ -27,11 +27,45 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         const message = chatInput.value.trim();
         if (!message) return;
-        addMessage(message, true);
-        chatInput.value = '';
+
+        chatInput.disabled = true;
+        sendBtn.disabled = true;
+
+        try {
+            addMessage(message, true);
+            chatInput.value = '';
+
+            const response = await fetch(`http://127.0.0.1:8000/chat/${sessionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    question: message
+                })
+            });
+
+            if (response.ok) {
+                const chatList = await response.json();
+                const lastChat = chatList[chatList.length - 1];
+                addMessage(lastChat.answer, false);
+            } else {
+                alert('메시지 전송 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+                chatMessages.removeChild(chatMessages.lastChild);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('서버 연결 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+            chatMessages.removeChild(chatMessages.lastChild);
+        } finally {
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
     }
 
     sendBtn.addEventListener('click', sendMessage);
