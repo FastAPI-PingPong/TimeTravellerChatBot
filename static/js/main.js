@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             if (response.ok) {
                 const data = await response.json();
-                console.log(`session_id = ${data.id}`);
-                window.location.href = `http://127.0.0.1:8000/static/chat.html?session_id=${data.id}`;
+                session_id = data.id
+                console.log(`session_id = ${session_id}`);
+                window.location.href = `http://127.0.0.1:8000/static/chat.html?session_id=${session_id}`;
             } else {
                 // const error = await response.json();
                 alert('세션 생성 중 오류가 발생했습니다.');
