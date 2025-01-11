@@ -19,6 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
     const introMessage = document.querySelector('.intro-message');
 
+    const createEmptyMessage = () => {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'empty-chat-message';
+        emptyMessage.textContent = '인물에게 질문을 해서 대화를 시작해보세요!';
+        chatMessages.appendChild(emptyMessage);
+    };
+
     const addMessage = (message, isUser) => {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
@@ -44,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sendBtn.disabled = true;
 
         try {
+            const emptyMessage = chatMessages.querySelector('.empty-chat-message');
+            if (emptyMessage) chatMessages.removeChild(emptyMessage);
+
             addMessage(message, true);
             chatInput.value = '';
 
@@ -146,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    createEmptyMessage();
     fetchIntroduction();
     fetchChatHistory();
 
