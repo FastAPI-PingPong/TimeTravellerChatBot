@@ -33,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('회원가입이 완료되었습니다.');
                 window.location.href = 'login.html';
             } else {
-                const errorMessage = response.status === 409 ?
-                    "해당 ID는 사용할 수 없습니다." : await response.json().detail;
+                const errorMessage = response.status === 409 ? "해당 ID는 사용할 수 없습니다." : "";
                 alert(errorMessage || '회원가입 중 오류가 발생했습니다.');
             }
         } catch (error) {
