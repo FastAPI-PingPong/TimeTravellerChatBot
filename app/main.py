@@ -14,6 +14,7 @@ from .schemas import (
     TokenResponse,
     SessionCreate,
     SessionCreateResponse,
+    SessionResponse,
     ChatCreate,
     ChatResponse,
 )
@@ -123,6 +124,15 @@ async def create_session(
     orm = ORM(db)
     new_session = orm.create_session(session_create_data, user.id)
     return new_session
+
+
+@app.get("/session", response_model=list[SessionResponse])
+async def get_sessions(
+    user: UserModel = Depends(get_user_from_access_token), db: Session = Depends(get_db)
+):
+    orm = ORM(db)
+    sessions = orm.get_sessions_by_user(user.id)
+    return sessions
 
 
 @app.get("/introduction/{session_id}", response_model=ChatResponse)

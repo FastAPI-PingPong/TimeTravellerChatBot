@@ -66,6 +66,23 @@ class SessionCreateResponse(BaseModel):
     id: int
 
 
+class SessionResponse(BaseModel):
+    """
+    채팅 세션 정보를 반환하기 위한 스키마
+
+    Attributes:
+    - id (int): 세션의 고유 ID
+    - year (int): 세션의 연도 설정값
+    - location (str): 세션의 위치 설정값
+    - persona (str): 세션의 인물 설정값
+    """
+
+    id: int
+    year: int
+    location: str
+    persona: str
+
+
 class ChatCreate(BaseModel):
     """
     채팅 메시지 생성 요청을 위한 스키마

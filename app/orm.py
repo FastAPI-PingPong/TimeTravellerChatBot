@@ -37,6 +37,21 @@ class ORM:
         """세션 ID로 세션 조회"""
         return self.db.query(SessionModel).filter(SessionModel.id == session_id).first()
 
+    def get_sessions_by_user(
+        self, user_id: int, get_recent: bool = True, recent_count: int = 5
+    ) -> list[SessionModel]:
+        """사용자 ID로 세션 조회"""
+        sessions_for_user_id = self.db.query(SessionModel).filter(
+            SessionModel.user_id == user_id
+        )
+        if not get_recent:
+            return sessions_for_user_id.all()
+        return (
+            sessions_for_user_id.order_by(SessionModel.created_at.desc())
+            .limit(recent_count)
+            .all()
+        )
+
     def create_chat(self, session_id: int, question: str, answer: str) -> ChatModel:
         """새로운 채팅 생성"""
         new_chat = ChatModel(session_id=session_id, question=question, answer=answer)
