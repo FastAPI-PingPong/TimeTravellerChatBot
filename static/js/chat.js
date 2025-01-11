@@ -27,6 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
+    const sendMessage = () => {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        addMessage(message, true);
+        chatInput.value = '';
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
     const fetchIntroduction = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/introduction/${sessionId}`, {
