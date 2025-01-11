@@ -1,5 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const loginFormContainer = document.getElementById('login-form-content');
+    const loginMessage = document.getElementById('login-status');
     const loginForm = document.querySelector('.login-form');
+    const mainBtn = document.getElementById('main-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    const isFromMain = sessionStorage.getItem('fromMain') === 'true';
+
+    if (isFromMain) {
+        checkLoginStatus();
+    } else {
+        showLoginForm();
+    }
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            checkLoginStatus();
+        }
+    });
+
+    mainBtn.addEventListener('click', () => {
+        window.location.href = 'main.html';
+    });
+
+    function checkLoginStatus() {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            loginFormContainer.style.display = 'none';
+            loginMessage.style.display = 'block';
+        } else {
+            showLoginForm();
+        }
+    }
+
+    function showLoginForm() {
+        loginFormContainer.style.display = 'block';
+        loginMessage.style.display = 'none';
+    }
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('fromMain');
+        alert('로그아웃 되었습니다.');
+        showLoginForm();
+    });
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -20,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
+                sessionStorage.setItem('fromMain', 'true');
                 alert('로그인 성공!');
                 window.location.href = 'main.html';
             } else {
