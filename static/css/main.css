@@ -29,6 +29,20 @@ h1 {
     font-size: 1.5rem;
 }
 
+/* 로그아웃 버튼을 오른쪽 상단에 위치시킴 */
+.logout-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
 .input-group, .select-group {
     margin-bottom: 1rem;
 }
