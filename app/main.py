@@ -130,6 +130,15 @@ async def create_session(
 async def get_sessions(
     user: UserModel = Depends(get_user_from_access_token), db: Session = Depends(get_db)
 ):
+    """
+    현재 사용자의 모든 채팅 세션을 가져오는 엔드포인트
+
+    Returns: 세션 목록
+    - id: 세션 ID
+    - year: 가상인물의 연도 정보
+    - location: 가상인물의 위치 정보
+    - persona: 가상인물의 인물 정보
+    """
     orm = ORM(db)
     sessions = orm.get_sessions_by_user(user.id)
     return sessions
