@@ -1,26 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) {
+    const token = localStorage.getItem('token');
+    if (!token) {
         window.location.href = 'login.html';
         return;
     }
 
     const chatForm = document.querySelector('.chat-form');
 
-    chatForm.addEventListener('submit', (e) => {
+    chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const chatData = {
-            year: document.getElementById('year').value,
-            location: document.getElementById('location').value,
-            person: document.getElementById('person').value
-        };
+        const year = document.getElementById('year').value;
+        const location = document.getElementById('location').value;
+        const person = document.getElementById('person').value;
 
+        const yearNum = parseInt(year);
+        if (isNaN(yearNum)) {
+            alert('연도는 숫자여야 합니다.');
+            return;
+        }
+        if (yearNum < 0 || yearNum > 2024) {
+            alert('연도는 0년에서 2024년 사이여야 합니다.');
+            return;
+        }
 
-        localStorage.setItem('chatData', JSON.stringify(chatData));
-
-
-        window.location.href = 'chat.html';
+        try {
+            const response = await fetch('http://127.0.0.1:8000/session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    year: yearNum,
+                    location: location,
+                    persona: person
+                })
+            });
+            console.log(response)
+            if (response.ok) {
+                const data = await response.json();
+                console.log(`session_id = ${data.id}`);
+                window.location.href = `http://127.0.0.1:8000/static/chat.html?session_id=${data.id}`;
+            } else {
+                // const error = await response.json();
+                alert('세션 생성 중 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            alert('서버 연결 중 오류가 발생했습니다.');
+            console.error('Error:', error);
+        }
     });
 });
