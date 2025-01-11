@@ -142,9 +142,7 @@ async def get_introduction(
     - answer: 가상인물의 자기소개 문구
     """
     chat_manager = ChatManager(session_id, db)
-    introduction_prompt, introduction = chat_manager.get_introduction()
-    orm = ORM(db)
-    orm.create_chat(session_id, introduction_prompt, introduction)
+    _, introduction = chat_manager.get_introduction()
     return {"question": "", "answer": introduction}
 
 
