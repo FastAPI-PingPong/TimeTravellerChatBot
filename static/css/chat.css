@@ -17,7 +17,7 @@ body {
 .container {
     width: 100%;
     max-width: 75%;
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
@@ -44,21 +44,13 @@ body {
     white-space: nowrap;
 }
 
-.intro-message {
-    font-size: 0.9rem;
-    text-align: left; /* 왼쪽 정렬 */
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
 .input-container {
     display: flex;
     align-items: center;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 0.5rem;
-    margin-top: 1rem; 
-    margin-bottom: 2rem; 
+    margin-bottom: 1rem;
 }
 
 .input-container input {
@@ -127,8 +119,9 @@ body {
     display: block;
     background-color: #2A2A2A;
     border-radius: 10px;
-    padding: 1.5rem;
-    height: 80%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    height: 100%;
     overflow-y: auto;
     font-weight: normal;
     text-align: left;
@@ -175,50 +168,10 @@ body {
     align-self: flex-end;
 }
 
-.input-container {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 0.5rem;
-    position: fixed;
-    bottom: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 75%;
-    max-width: 600px;
-    height: 45px;
-}
-
-.input-container textarea {
-    flex-grow: 1;
-    background: transparent;
-    border: none;
-    color: white;
-    font-family: 'Arial', sans-serif;
-    font-size: 1rem;
-    padding: 0.1rem;
-    outline: none;
-    resize: none;
-    height: 100%;
-    max-height: 100px;
-    overflow-y: hidden;
-}
-
-.send-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: bold;
-}
-
 .warning-text {
     text-align: center;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.8rem;
-    margin-top: -0.7rem;
 }
 
 .typing-indicator {
