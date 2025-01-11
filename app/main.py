@@ -160,15 +160,35 @@ async def chat(
     - session_id: 세션 ID (path parameter)
     - question: 사용자의 질문 메시지
 
-    Returns:
-        채팅 기록 목록 (질문과 답변 쌍의 리스트)
-            - question: 사용자 질문 메시지
-            - answer: 가상인물의 답변 메시지
+    Returns: 채팅 기록 목록 (질문과 답변 쌍의 리스트)
+    - question: 사용자 질문 메시지
+    - answer: 가상인물의 답변 메시지
     """
     chat_manager = ChatManager(session_id, db)
     question, answer = chat_manager.get_answer(chat_create_data.question)
     orm = ORM(db)
     orm.create_chat(session_id, question, answer)
+    chats = orm.get_chats_by_session(session_id)
+    chat_list = [{"question": chat.question, "answer": chat.answer} for chat in chats]
+    return chat_list
+
+
+@app.get("/chat/{session_id}", response_model=list[ChatResponse])
+async def get_chats(
+    session_id: int,
+    user: UserModel = Depends(get_user_from_access_token),
+    db: Session = Depends(get_db),
+):
+    """
+    특정 세션의 모든 대화 내역을 가져오는 엔드포인트
+    Args: 세션 ID
+    - session_id: 세션 ID (path parameter)
+
+    Returns: 채팅 기록 목록 (질문과 답변 쌍의 리스트)
+    - question: 사용자 질문 메시지
+    - answer: 가상인물의 답변 메시지
+    """
+    orm = ORM(db)
     chats = orm.get_chats_by_session(session_id)
     chat_list = [{"question": chat.question, "answer": chat.answer} for chat in chats]
     return chat_list

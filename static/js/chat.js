@@ -42,7 +42,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const fetchChatHistory = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/chat/${sessionId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const chatList = await response.json();
+                chatList.forEach(chat => {
+                    console.log(`Question: ${chat.question}, Answer: ${chat.answer}`);
+                });
+            } else {
+                console.error('채팅 내역을 가져오는데 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     fetchIntroduction();
+    fetchChatHistory();
 
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('token');
