@@ -62,6 +62,8 @@ body {
 }
 
 .input-container input {
+    display: flex;
+    width: 100%;
     flex-grow: 1;
     background: transparent;
     border: none;
@@ -69,6 +71,21 @@ body {
     font-size: 1rem;
     padding: 0.5rem;
     outline: none;
+}
+
+.input-container textarea {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem;
+    outline: none;
+    resize: none;
+    min-height: 40px;
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .send-btn {

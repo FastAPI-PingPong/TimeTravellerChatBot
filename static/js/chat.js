@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const chatMessages = document.querySelector('.chat-messages');
-    const chatInput = document.getElementById('chat-input');
+    const chatInput = document.querySelector('.chat-input');
     const sendBtn = document.querySelector('.send-btn');
     const logoutBtn = document.querySelector('.logout-btn');
     const introMessage = document.querySelector('.intro-message');
@@ -68,9 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
+    sendBtn.addEventListener('click', () => sendMessage());
     chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
     });
 
     const fetchIntroduction = async () => {
