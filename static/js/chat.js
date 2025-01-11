@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.appendChild(emptyMessage);
     };
 
+    const removeEmptyMessage = () => {
+        const emptyMessage = chatMessages.querySelector('.empty-chat-message');
+        if (emptyMessage) chatMessages.removeChild(emptyMessage);
+    };
+
     const addMessage = (message, isUser) => {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
@@ -51,8 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sendBtn.disabled = true;
 
         try {
-            const emptyMessage = chatMessages.querySelector('.empty-chat-message');
-            if (emptyMessage) chatMessages.removeChild(emptyMessage);
+            removeEmptyMessage();
 
             addMessage(message, true);
             chatInput.value = '';
@@ -139,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const chatList = await response.json();
+                if (chatList.length <= 1) createEmptyMessage();
+                else removeEmptyMessage();
                 chatList.slice(1).forEach(chat => {
                     addMessage(chat.question, true);
                     addMessage(chat.answer, false)
@@ -156,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    createEmptyMessage();
     fetchIntroduction();
     fetchChatHistory();
 
