@@ -14,6 +14,8 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+REFRESH_TOKEN_EXPIRE_DAYS = 7
+
 
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
@@ -47,7 +49,7 @@ def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_token(username: str):
+def create_token(username: str, expires_delta: timedelta):
     """
     사용자 인증을 위한 JWT 토큰을 생성
 
@@ -58,13 +60,13 @@ def create_token(username: str):
         str: 생성된 JWT 토큰
 
     Notes:
-        - 토큰은 현재 시간으로부터 ACCESS_TOKEN_EXPIRE_MINUTES 후에 만료.
+        - 액세스 토큰은 현재 시간으로부터 ACCESS_TOKEN_EXPIRE_MINUTES 분 후에 만료.
+        - 리프레시 토큰은 현재 시간으로부터 REFRESH_TOKEN_EXPIRE_DAYS 일 후에 만료.
         - 토큰에는 사용자 이름(sub)과 만료 시간(exp)이 포함됨.
     """
     encode_data = {
         "sub": username,
-        "exp": datetime.now(timezone.utc)
-        + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        "exp": datetime.now(timezone.utc) + expires_delta,
     }
     return jwt.encode(encode_data, SECRET_KEY, algorithm=ALGORITHM)
 

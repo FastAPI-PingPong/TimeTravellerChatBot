@@ -33,10 +33,12 @@ class TokenResponse(BaseModel):
 
     Attributes:
     - access_token (str): JWT 형식의 액세스 토큰
+    - refresh_token (str): JWT 형식의 리프레시 토큰
     - token_type (str): 토큰 타입 (예: "bearer")
     """
 
     access_token: str
+    refresh_token: str
     token_type: str
 
 

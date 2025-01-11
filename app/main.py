@@ -5,8 +5,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
+from datetime import timedelta
 from .database import create_tables, get_db
-from .auth import verify_password, create_token, get_user_from_access_token
+from .auth import (
+    REFRESH_TOKEN_EXPIRE_DAYS,
+    verify_password,
+    create_token,
+    get_user_from_access_token,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+)
 
 from .schemas import (
     UserCreate,
@@ -86,6 +93,7 @@ async def login(
 
     Returns: 토큰 정보
     - access_token: JWT 액세스 토큰
+    - refresh_token: JWT 리프레시 토큰
     - token_type: 토큰 타입 (bearer)
 
     Raises:
@@ -100,8 +108,17 @@ async def login(
     ):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
 
-    access_token = create_token(str(user.username))
-    return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_token(
+        str(user.username), timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    refresh_token = create_token(
+        str(user.username), timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+    }
 
 
 @app.post("/session", response_model=SessionCreateResponse)
