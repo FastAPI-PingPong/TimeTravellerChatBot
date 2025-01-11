@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
+    const createWaitingIndicator = () => {
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'typing-indicator';
+        typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+        chatMessages.appendChild(typingIndicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return typingIndicator;
+    }
+
     const sendMessage = async () => {
         const message = chatInput.value.trim();
         if (!message) return;
@@ -37,6 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             addMessage(message, true);
             chatInput.value = '';
+
+            const waitingIndicator = createWaitingIndicator();
 
             const response = await fetch(`http://127.0.0.1:8000/chat/${sessionId}`, {
                 method: 'POST',
@@ -50,16 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
+                chatMessages.removeChild(waitingIndicator);
                 const chatList = await response.json();
                 const lastChat = chatList[chatList.length - 1];
                 addMessage(lastChat.answer, false);
             } else {
                 alert('메시지 전송 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+                chatMessages.removeChild(waitingIndicator);
                 chatMessages.removeChild(chatMessages.lastChild);
             }
         } catch (error) {
             console.error('Error:', error);
             alert('서버 연결 중 오류가 발생했습니다. 마지막 질문은 제거하겠습니다.');
+            chatMessages.querySelectorAll('.typing-indicator').forEach(el => el.remove());
             chatMessages.removeChild(chatMessages.lastChild);
         } finally {
             chatInput.disabled = false;
