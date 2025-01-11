@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
     const introMessage = document.querySelector('.intro-message');
 
+    const addMessage = (message, isUser) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageDiv.textContent = message;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
     const fetchIntroduction = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/introduction/${sessionId}`, {
@@ -53,8 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const chatList = await response.json();
-                chatList.forEach(chat => {
-                    console.log(`Question: ${chat.question}, Answer: ${chat.answer}`);
+                chatList.slice(1).forEach(chat => {
+                    addMessage(chat.question, true);
+                    addMessage(chat.answer, false)
                 });
             } else {
                 console.error('채팅 내역을 가져오는데 실패했습니다.');
