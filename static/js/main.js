@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const chatForm = document.querySelector('.chat-form');
+    const logoutBtn = document.querySelector('.logout-btn');
 
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -51,5 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('서버 연결 중 오류가 발생했습니다.');
             console.error('Error:', error);
         }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
     });
 });

@@ -43,4 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     fetchIntroduction();
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+    });
 });
