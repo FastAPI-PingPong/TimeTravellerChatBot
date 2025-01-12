@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const waitingIndicator = createWaitingIndicator();
 
-            const response = await fetch(`http://127.0.0.1:8000/chat/${sessionId}`, {
+            const response = await fetchWithToken(`http://127.0.0.1:8000/chat/${sessionId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchIntroduction = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/introduction/${sessionId}`, {
+            const response = await fetchWithToken(`http://127.0.0.1:8000/introduction/${sessionId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchChatHistory = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/chat/${sessionId}`, {
+            const response = await fetchWithToken(`http://127.0.0.1:8000/chat/${sessionId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         window.location.href = 'login.html';
     });
 });

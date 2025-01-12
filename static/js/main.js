@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/session', {
+            const response = await fetchWithToken('http://127.0.0.1:8000/session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,14 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     persona: persona
                 })
             });
-            console.log(response)
+
             if (response.ok) {
                 const data = await response.json();
                 session_id = data.id
                 console.log(`session_id = ${session_id}`);
                 window.location.href = `http://127.0.0.1:8000/static/chat.html?session_id=${session_id}`;
             } else {
-                // const error = await response.json();
                 alert('세션 생성 중 오류가 발생했습니다.');
             }
         } catch (error) {
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchRecentSessions = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/session', {
+            const response = await fetchWithToken('http://127.0.0.1:8000/session', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -95,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         window.location.href = 'login.html';
     });
 });
