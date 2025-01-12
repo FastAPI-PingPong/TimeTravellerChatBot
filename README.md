@@ -87,3 +87,17 @@ http://127.0.0.1:8000/static/login.html 접속
 ##디렉터리 구조
 
 ![image](https://github.com/user-attachments/assets/e29ab5c5-c731-4768-a8bd-aedcfb6327ee)
+
+
+
+##실행화면 gif
+![gif1](https://github.com/user-attachments/assets/fb6a8157-af20-4171-8d3a-5973707cad42)
+![gif2](https://github.com/user-attachments/assets/464f829a-0f78-4f85-b463-f1d7c1adadea)
+![gif3](https://github.com/user-attachments/assets/e1e2b5a9-9637-44fe-8f9a-62c3b4ccf7de)
+![gif4](https://github.com/user-attachments/assets/46300748-585a-463b-943e-f98350459308)
+![gif5](https://github.com/user-attachments/assets/d48a4a4a-804a-4e7e-b460-bd922bd916d5)
+
+
+
+
+
