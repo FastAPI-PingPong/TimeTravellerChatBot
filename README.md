@@ -83,5 +83,7 @@ http://127.0.0.1:8000/static/login.html 접속
 4. 해당 시대와 지역에 관련된 질문으로 대화 시작
 
 
-7. 디렉터리 구조
 
+##디렉터리 구조
+
+![image](https://github.com/user-attachments/assets/e29ab5c5-c731-4768-a8bd-aedcfb6327ee)
