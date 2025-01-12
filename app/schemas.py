@@ -42,6 +42,17 @@ class TokenResponse(BaseModel):
     token_type: str
 
 
+class TokenRefresh(BaseModel):
+    """
+    인증 토큰 갱신 요청을 위한 스키마
+
+    Attributes:
+    - refresh_token (str): JWT 형식의 리프레시 토큰
+    """
+
+    refresh_token: str
+
+
 class SessionCreate(BaseModel):
     """
     대화 세션 생성 요청을 위한 스키마
