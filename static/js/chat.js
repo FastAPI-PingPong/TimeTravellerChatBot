@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
     const introMessage = document.querySelector('.intro-message');
 
+    introMessage.classList.add('intro-loading');
+
     const createEmptyMessage = () => {
         const emptyMessage = document.createElement('div');
         emptyMessage.className = 'empty-chat-message';
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
+                introMessage.classList.remove('intro-loading');
                 introMessage.textContent = data.answer;
             } else {
                 const data = await response.json();
@@ -152,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const data = await response.json();
                 console.error(data.message || `HTTP error status: ${response.status}`);
-                alert('이전 대화 내역 조회에 실패했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다.');
+                alert('이전 대화 내역 조회에 실패했습니다.\n새로운 대화 세션 생성으로 다시 시작합니다');
                 window.location.href = 'main.html';
             }
         } catch (error) {
