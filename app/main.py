@@ -109,7 +109,7 @@ async def login(
     - token_type: 토큰 타입 (bearer)
 
     Raises:
-        401: 잘못된 사용자명이나 비밀번호
+    - 401: 잘못된 사용자명이나 비밀번호
     """
     orm = ORM(db)
     user = orm.get_user_by_username(form_data.username)
@@ -149,7 +149,7 @@ async def refresh_token(
     - token_type: 토큰 타입 (bearer)
 
     Raises:
-        401: 리프레시 토큰으로부터 사용자 정보 조회 실패
+    - 401: 리프레시 토큰으로부터 사용자 정보 조회 실패
     """
     user = get_user_from_token(token_refresh_data.refresh_token, db)
     access_token = create_token(
