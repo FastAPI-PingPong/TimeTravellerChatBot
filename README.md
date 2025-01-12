@@ -81,3 +81,45 @@ http://127.0.0.1:8000/static/login.html 접속
 2. 최근 대화 세션 선택하거나, 새로운 대화 세션 생성 (예: 1800년의 파리의 예술가)
 3. 자기소개 메시지 수신하여 인물 확인
 4. 해당 시대와 지역에 관련된 질문으로 대화 시작
+
+
+7. 디렉터리 구조
+
+┃
+ ┃
+ ┃
+ ┃ app
+ ┃ ┣ auth.py
+ ┃ ┣ chat.py
+ ┃ ┣ database.py
+ ┃ ┣ main.py
+ ┃ ┣ models.py
+ ┃ ┣ orm.py
+ ┃ ┣ schemas.py
+ ┃ ┗ __init__.py
+ ┃
+ ┃ static
+ ┃ ┣ css
+ ┃ ┃ ┣ chat.css
+ ┃ ┃ ┣ login.css
+ ┃ ┃ ┣ main.css
+ ┃ ┃ ┗ signup.css
+ ┃ ┣ images
+ ┃ ┃ ┣ icon-lock.png
+ ┃ ┃ ┣ icon-user.png
+ ┃ ┃ ┗ logo.png
+ ┃ ┣ js
+ ┃ ┃ ┣ auth.js
+ ┃ ┃ ┣ chat.js
+ ┃ ┃ ┣ login.js
+ ┃ ┃ ┣ main.js
+ ┃ ┃ ┗ signup.js
+ ┃ ┣ chat.html
+ ┃ ┣ login.html
+ ┃ ┣ main.html
+ ┃ ┗ signup.html
+ ┃
+ ┣ requirements.txt
+ ┣ readme.md
+ ┣ venv
+ ┣ .env
