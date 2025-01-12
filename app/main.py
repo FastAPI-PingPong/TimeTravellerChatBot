@@ -11,11 +11,12 @@ from .auth import (
     REFRESH_TOKEN_EXPIRE_DAYS,
     verify_password,
     create_token,
-    get_user_from_access_token,
+    get_user_from_token,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
 
 from .schemas import (
+    TokenRefresh,
     UserCreate,
     UserCreateResposne,
     TokenResponse,
@@ -121,10 +122,42 @@ async def login(
     }
 
 
+@app.post("/refresh", response_model=TokenResponse)
+async def refresh_token(
+    token_refresh_data: TokenRefresh, db: Session = Depends(get_db)
+):
+    """
+    사용자의 리프레시 토큰을 사용하여 새로운 토큰 세트를 발급하는 엔드포인트
+
+    Args: 기존 리프레시 토큰
+    - refresh_token (str): 기존 JWT 리프레시 토큰
+
+    Returns: 토큰 정보
+    - access_token: JWT 액세스 토큰
+    - refresh_token: JWT 리프레시 토큰
+    - token_type: 토큰 타입 (bearer)
+
+    Raises:
+        401: 리프레시 토큰으로부터 사용자 정보 조회 실패
+    """
+    user = get_user_from_token(token_refresh_data.refresh_token, db)
+    access_token = create_token(
+        str(user.username), timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    refresh_token = create_token(
+        str(user.username), timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+    }
+
+
 @app.post("/session", response_model=SessionCreateResponse)
 async def create_session(
     session_create_data: SessionCreate,
-    user: UserModel = Depends(get_user_from_access_token),
+    user: UserModel = Depends(get_user_from_token),
     db: Session = Depends(get_db),
 ):
     """
@@ -145,7 +178,7 @@ async def create_session(
 
 @app.get("/session", response_model=list[SessionResponse])
 async def get_sessions(
-    user: UserModel = Depends(get_user_from_access_token), db: Session = Depends(get_db)
+    user: UserModel = Depends(get_user_from_token), db: Session = Depends(get_db)
 ):
     """
     현재 사용자의 모든 채팅 세션을 가져오는 엔드포인트
@@ -164,7 +197,7 @@ async def get_sessions(
 @app.get("/introduction/{session_id}", response_model=ChatResponse)
 async def get_introduction(
     session_id: int,
-    user: UserModel = Depends(get_user_from_access_token),
+    user: UserModel = Depends(get_user_from_token),
     db: Session = Depends(get_db),
 ):
     """
@@ -186,7 +219,7 @@ async def get_introduction(
 async def chat(
     session_id: int,
     chat_create_data: ChatCreate,
-    user: UserModel = Depends(get_user_from_access_token),
+    user: UserModel = Depends(get_user_from_token),
     db: Session = Depends(get_db),
 ):
     """
@@ -212,7 +245,7 @@ async def chat(
 @app.get("/chat/{session_id}", response_model=list[ChatResponse])
 async def get_chats(
     session_id: int,
-    user: UserModel = Depends(get_user_from_access_token),
+    user: UserModel = Depends(get_user_from_token),
     db: Session = Depends(get_db),
 ):
     """

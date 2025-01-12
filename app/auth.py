@@ -88,11 +88,11 @@ def verify_token(token: str):
         return None
 
 
-def get_user_from_access_token(
+def get_user_from_token(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ):
     """
-    액세스 토큰으로부터 현재 인증된 사용자를 조회
+    JWT 토큰으로부터 현재 인증된 사용자를 조회
 
     Args:
         token (str): Bearer 토큰 (FastAPI의 oauth2_scheme을 통해 자동으로 주입됨)
