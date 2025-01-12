@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('로그인 성공!');
                 window.location.href = 'main.html';
             } else {
-                const errorMessage = response.status === 401 ? "아이디 또는 비밀번호가 일치하지 않습니다." : "";
+                const errorMessage = response.status === 401 ? "아이디 또는 비밀번호가 맞지 않습니다." : "";
                 alert(errorMessage || "로그인 중 오류가 발생했습니다.");
             }
         } catch (error) {
