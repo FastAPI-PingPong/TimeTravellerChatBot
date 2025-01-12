@@ -22,13 +22,31 @@ body {
     max-width: 400px;
 }
 
+.logo-container {
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+.logo-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
 h1 {
     text-align: center;
     margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    position: relative;
 }
 
 .welcome-text {
-    text-align: left;
+    text-align: center;
     margin-bottom: 2rem;
     color: #666;
 }
