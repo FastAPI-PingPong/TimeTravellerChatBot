@@ -103,7 +103,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: 500px;
+    min-height: 470px;
     margin-bottom: 1rem;
 }
 
@@ -113,6 +113,41 @@ body {
     margin-bottom: 1rem;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.8);
+}
+
+.intro-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+}
+
+.intro-loading::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 4px;
+    animation: introTyping 1.4s infinite;
+}
+
+.intro-loading::before {
+    content: '인물의 자기소개를 받아오는 중입니다';
+}
+
+@keyframes introTyping {
+    0%, 100% {
+        box-shadow: 12px 0 0 0 rgba(255,255,255,0.3), 24px 0 0 0 rgba(255,255,255,0.3);
+    }
+    33% {
+        box-shadow: 12px 0 0 0 rgba(255,255,255,1), 24px 0 0 0 rgba(255,255,255,0.3);
+    }
+    66% {
+        box-shadow: 12px 0 0 0 rgba(255,255,255,0.3), 24px 0 0 0 rgba(255,255,255,1);
+    }
 }
 
 .chat-box {
