@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
+                localStorage.setItem('refreshToken', data.refresh_token);
                 sessionStorage.setItem('fromMain', 'true');
                 alert('로그인 성공!');
                 window.location.href = 'main.html';
