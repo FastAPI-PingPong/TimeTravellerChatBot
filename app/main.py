@@ -71,8 +71,19 @@ async def signup(user: UserCreate, db: Session = Depends(get_db)):
     - username: 사용자명
 
     Raises:
-        409: 사용자명이 이미 존재하는 경우
+    - 400: username 또는 password가 최소 길이 조건을 만족하지 않는 경우
+    - 409: 사용자명이 이미 존재하는 경우
     """
+    if len(user.username) < 4:
+        raise HTTPException(
+            status_code=400, detail="Username must be at least 4 characters long."
+        )
+
+    if len(user.password) < 6:
+        raise HTTPException(
+            status_code=400, detail="Password must be at least 6 characters long."
+        )
+
     orm = ORM(db)
     if orm.check_username_exists(user.username):
         raise HTTPException(status_code=409, detail="Username is already taken.")
