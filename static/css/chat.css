@@ -103,7 +103,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: 470px;
+    min-height: 560px;
     margin-bottom: 1rem;
 }
 
